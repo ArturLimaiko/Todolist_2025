@@ -41,21 +41,29 @@ export const App = () => {
     }
 
     //ф-ция создания таски--------------------------------------------------------------------
-    const createTask = (title:string) => {
+    const createTask = (title: string) => {
         const newTask: Task = {id: v1(), title, isDone: false}
-        const newTasks = [newTask,...tasks]
+        const newTasks = [newTask, ...tasks]
         setTasks(newTasks)
     }
 
+    //ф-ция создания таски--------------------------------------------------------------------
+    const changeTaskStatus = (taskId: string, isDone: boolean) => {
+        const newState= tasks.map(task => task.id == taskId ? {...task, isDone} : task)
+        setTasks(newState)
+    }
+
     return (
-        <>
+        <div className='app'>
             <TodolistItem title={'What to learn'}
                           changeFilter={changeFilter}
                           tasks={filteredTasks}
                           date={'date: '}
                           deleteTask={deleteTask}
                           createTask={createTask}
+                          changeTaskStatus={changeTaskStatus}
+                          filter={filter}
             />
-        </>
+        </div>
     )
 }
