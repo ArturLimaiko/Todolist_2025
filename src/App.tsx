@@ -1,20 +1,21 @@
 import './App.css'
 import {TodolistItem} from "./components/TodolistItem.tsx";
 import {useState} from "react";
+import {v1} from "uuid";
 
-export type Task = { id: number, title: string, isDone: boolean }
+export type Task = { id: string, title: string, isDone: boolean }
 export type FilterValues = 'all' | 'active' | 'completed'
 
 export const App = () => {
     //локальный стейт---------------------------------------------------------------------
     const [tasks, setTasks] = useState<Task[]>(
         [
-            {id: 1, title: 'HTML&CSS', isDone: true},
-            {id: 2, title: 'JS', isDone: true},
-            {id: 3, title: 'ReactJS', isDone: false},
-            {id: 4, title: 'Redux', isDone: false},
-            {id: 5, title: 'Typescript', isDone: false},
-            {id: 6, title: 'RTK query', isDone: false},
+            {id: v1(), title: 'HTML&CSS', isDone: true},
+            {id: v1(), title: 'JS', isDone: true},
+            {id: v1(), title: 'ReactJS', isDone: false},
+            {id: v1(), title: 'Redux', isDone: false},
+            {id: v1(), title: 'Typescript', isDone: false},
+            {id: v1(), title: 'RTK query', isDone: false},
         ]
     )
 
@@ -29,7 +30,7 @@ export const App = () => {
     }
 
     //ф-ция удаления тасок---------------------------------------------------------------------
-    const deleteTask = (taskId: number) => {
+    const deleteTask = (taskId: string) => {
         const filteredTasks = tasks.filter(t => t.id !== taskId)
         setTasks(filteredTasks)
     }
@@ -39,10 +40,22 @@ export const App = () => {
         setFilter(filter)
     }
 
+    //ф-ция создания таски--------------------------------------------------------------------
+    const createTask = (title:string) => {
+        const newTask: Task = {id: v1(), title, isDone: false}
+        const newTasks = [newTask,...tasks]
+        setTasks(newTasks)
+    }
+
     return (
         <>
-            <TodolistItem title={'What to learn'} changeFilter={changeFilter} tasks={filteredTasks} date={'date: '}
-                          deleteTask={deleteTask}/>
+            <TodolistItem title={'What to learn'}
+                          changeFilter={changeFilter}
+                          tasks={filteredTasks}
+                          date={'date: '}
+                          deleteTask={deleteTask}
+                          createTask={createTask}
+            />
         </>
     )
 }
