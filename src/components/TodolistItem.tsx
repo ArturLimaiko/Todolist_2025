@@ -1,6 +1,6 @@
 import {FilterValues, Task} from "../App.tsx";
 import {Button} from "./Button.tsx";
-import {useState} from "react";
+import {ChangeEvent,KeyboardEvent ,useState} from "react";
 
 type Props = {
     title: string
@@ -12,7 +12,6 @@ type Props = {
 }
 
 export const TodolistItem = ({title, tasks, date, deleteTask, changeFilter, createTask}: Props) => {
-    // const inputRef = useRef<HTMLInputElement>(null); // <input> привязан к inputRef.
     const [taskTitle, setTaskTitle] = useState('')
 
     //логика создания таски
@@ -21,11 +20,19 @@ export const TodolistItem = ({title, tasks, date, deleteTask, changeFilter, crea
         setTaskTitle('') // Очищаем input после создания таски
     }
 
+    const changeTaskTitleHandler = (event: ChangeEvent<HTMLInputElement>) => setTaskTitle(event.currentTarget.value)
+
+    const onKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            createTaskHandler()
+        }
+    }
+
     return (
         <div>
             <h3>{title}</h3>
             <div>
-                <input value={taskTitle} onChange={(event) => setTaskTitle(event.currentTarget.value)}/>
+                <input value={taskTitle} onChange={changeTaskTitleHandler} onKeyDown={onKeyDownHandler}/>
                 <Button title={'+'} onClick={createTaskHandler}/>
             </div>
             {tasks.length === 0 ? (
@@ -33,9 +40,12 @@ export const TodolistItem = ({title, tasks, date, deleteTask, changeFilter, crea
                 )
                 : (<ul>
                     {tasks.map(task => {
+                        const deleteTaskHandler = () =>{deleteTask(task.id)}
                         return (
-                            <li key={task.id}><span>{task.title}</span>
-                                <Button title={'x'} onClick={() => deleteTask(task.id)}/>
+                            <li key={task.id}>
+                                <input type={'checkbox'} checked={task.isDone} onChange={()=>{}}/>
+                                <span>{task.title}</span>
+                                <Button title={'x'} onClick={deleteTaskHandler}/>
                             </li>
                         )
                     })}
