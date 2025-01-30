@@ -7,6 +7,11 @@
   margin-right: 50px;
 }
 
+.container {
+  display: flex;
+  align-items: center;
+}
+
 .error {
   border: red 2px solid;
 }
@@ -23,3 +28,4 @@
 .is-done {
   opacity: 0.5;
 }
+
