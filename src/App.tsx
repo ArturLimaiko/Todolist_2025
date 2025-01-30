@@ -2,6 +2,7 @@ import './App.css'
 import {TodolistItem} from "./components/TodolistItem.tsx";
 import {useState} from "react";
 import {v1} from "uuid";
+import {CreateItemForm} from "./components/CreateItemForm.tsx";
 
 export type Task = { id: string, title: string, isDone: boolean }
 export type FilterValues = 'all' | 'active' | 'completed'
@@ -33,7 +34,6 @@ export const App = () => {
         ]
     })
 
-
     //ф-ция удаления тасок---------------------------------------------------------------------
     const deleteTask = (todolistId: string, taskId: string) => {
         setTasks({...tasks, [todolistId]: tasks[todolistId].filter(t => t.id !== taskId)})
@@ -55,6 +55,14 @@ export const App = () => {
         setTasks({...tasks, [todolistId]: tasks[todolistId].map(task => task.id === taskId ? {...task, isDone} : task)})
     }
 
+    //ф-ция создания тудулиста------------------------------------------------------------------
+    const createTodolist = (title: string) => {
+        const todolistId = v1()
+        const newTodolist: Todolist = {id: todolistId, title, filter: 'all'}
+        setTodolists([newTodolist, ...todolists])
+        setTasks( {...tasks, [todolistId]:[]})
+    }
+
     //ф-ция удаления тудулиста--------------------------------------------------------------------
     const deleteTodolist = (todolistId: string) => {
         setTodolists(todolists.filter(t => t.id !== todolistId))
@@ -66,6 +74,7 @@ export const App = () => {
 
     return (
         <div className='app'>
+            <CreateItemForm createItem={createTodolist}/>
             {todolists.map(todolist => {
                 //фильтрация тасок---------------------------------------------------------------------
                 //для тудулиста берем первоначально все таски по айдишке
@@ -82,11 +91,12 @@ export const App = () => {
                     <TodolistItem key={todolist.id}
                                   todolist={todolist}
                                   changeFilter={changeFilter}
-                                  tasks={filteredTasks}
                                   date={'date: '}
+                                  tasks={filteredTasks}
                                   deleteTodolist={deleteTodolist}
                                   deleteTask={deleteTask}
                                   createTask={createTask}
+                                  createTodolist={createTodolist}
                                   changeTaskStatus={changeTaskStatus}
                     />
                 )
