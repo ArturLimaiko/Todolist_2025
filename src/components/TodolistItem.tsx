@@ -14,6 +14,7 @@ type Props = {
     createTask: (todolistId: string, title: string) => void
     createTodolist: (todolistId: string, title: string) => void
     changeTaskStatus: (todolistId: string, taskId: string, isDone: boolean) => void
+    changeTaskTitle: (todolistId: string, taskId: string, title: string) => void
 }
 
 export const TodolistItem = (props: Props) => {
@@ -25,16 +26,17 @@ export const TodolistItem = (props: Props) => {
             deleteTask,
             deleteTodolist,
             changeFilter,
-            changeTaskStatus
+            changeTaskStatus,
+            changeTaskTitle
         } = props
 
-    const createTaskHandler = (title: string) => {
-        createTask(id, title)
-    }
+        const createTaskHandler = (title: string) => {
+            createTask(id, title)
+        }
 
-    // const createTodolistHandler = (id: string, title: string) => {
-    //     createTodolist(id, title)
-    // }
+        // const createTodolistHandler = (id: string, title: string) => {
+        //     createTodolist(id, title)
+        // }
 
         //фильтрация тудулистов--------------------------------------------------------------------
         const changeFilterHandler = (filter: FilterValues) => {
@@ -63,16 +65,20 @@ export const TodolistItem = (props: Props) => {
                             const deleteTaskHandler = () => {
                                 deleteTask(id, task.id)
                             }
-                            //статус таски--------------------------------------------------------------------
+                            //изменение статуса таски--------------------------------------------------------------------
                             const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
                                 const newStatusValue = e.currentTarget.checked
                                 changeTaskStatus(id, task.id, newStatusValue)
+                            }
+                            //изменение названия таски-----------------------------------------------------------
+                            const changeTaskTitleHandler = (title:string) => {
+                                changeTaskTitle(id, task.id, title)
                             }
 
                             return (
                                 <li key={task.id} className={task.isDone ? 'is-done' : ''}>
                                     <input type={'checkbox'} checked={task.isDone} onChange={changeTaskStatusHandler}/>
-                                    <EditableSpan value={task.title}/>
+                                    <EditableSpan value={task.title} onChange={changeTaskTitleHandler}/>
                                     <Button title={'x'} onClick={deleteTaskHandler}/>
                                 </li>
                             )
