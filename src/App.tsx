@@ -64,6 +64,7 @@ export const App = () => {
         })
     }
 
+
     //ф-ция создания тудулиста------------------------------------------------------------------
     const createTodolist = (title: string) => {
         const todolistId = v1()
@@ -79,6 +80,11 @@ export const App = () => {
         delete tasks[todolistId]
         /** Устанавливаем в state копию объекта что бы реакт обновил данные*/
         setTasks({...tasks})
+    }
+
+    //ф-ция изменения названия тудулиста-----------------------------------------------------------
+    const changeTodolistTitle = (todolistId: string, title: string) => {
+        setTodolists(todolists.map(todolist => todolist.id === todolistId ? {...todolist, title}: todolist))
     }
 
     return (
@@ -108,6 +114,7 @@ export const App = () => {
                                   createTodolist={createTodolist}
                                   changeTaskStatus={changeTaskStatus}
                                   changeTaskTitle={changeTaskTitle}
+                                  changeTodolistTitle={changeTodolistTitle}
                     />
                 )
             })}
