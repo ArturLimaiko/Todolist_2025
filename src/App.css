@@ -12,15 +12,6 @@
   align-items: center;
 }
 
-.error {
-  border: red 2px solid;
-}
-
-.error-message {
-  color: red;
-  font-weight: bold;
-}
-
 .active-filter {
   background-color: lightgreen;
 }
@@ -28,4 +19,3 @@
 .is-done {
   opacity: 0.5;
 }
-

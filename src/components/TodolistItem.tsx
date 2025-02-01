@@ -1,8 +1,13 @@
 import {FilterValues, Task, Todolist} from "../App.tsx";
-import {Button} from "./Button.tsx";
+import Button from '@mui/material/Button'
 import {ChangeEvent} from "react";
 import {CreateItemForm} from "./CreateItemForm.tsx";
 import {EditableSpan} from "./EditableSpan.tsx";
+import IconButton from '@mui/material/IconButton'
+import DeleteIcon from '@mui/icons-material/Delete'
+import Checkbox from '@mui/material/Checkbox';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem'
 
 type Props = {
     todolist: Todolist
@@ -59,7 +64,9 @@ export const TodolistItem = (props: Props) => {
                     <h3>
                         <EditableSpan value={title} onChange={changeTodolistTitleHandler}/>
                     </h3>
-                    <Button title={'x'} onClick={deleteTodolistHandler}/>
+                    <IconButton onClick={deleteTodolistHandler} aria-label="delete" size="small">
+                        <DeleteIcon fontSize="small"/>
+                    </IconButton>
                 </div>
                 <div>
                     <CreateItemForm createItem={createTaskHandler}/>
@@ -67,7 +74,7 @@ export const TodolistItem = (props: Props) => {
                 {tasks.length === 0 ? (
                         <p>Тасок нет</p>
                     )
-                    : (<ul>
+                    : (<List>
                         {tasks.map(task => {
                             //удаление таски--------------------------------------------------------------------
                             const deleteTaskHandler = () => {
@@ -84,24 +91,26 @@ export const TodolistItem = (props: Props) => {
                             }
 
                             return (
-                                <li key={task.id} className={task.isDone ? 'is-done' : ''}>
-                                    <input type={'checkbox'} checked={task.isDone} onChange={changeTaskStatusHandler}/>
+                                <ListItem key={task.id} className={task.isDone ? 'is-done' : ''}>
+                                        <Checkbox size={'small'} checked={task.isDone} onChange={changeTaskStatusHandler}/>
                                     <EditableSpan value={task.title} onChange={changeTaskTitleHandler}/>
-                                    <Button title={'x'} onClick={deleteTaskHandler}/>
-                                </li>
+                                    <IconButton onClick={deleteTaskHandler} aria-label="delete" size="small">
+                                        <DeleteIcon fontSize="small"/>
+                                    </IconButton>
+                                </ListItem>
                             )
                         })}
-                    </ul>)}
+                    </List>)}
                 <div>{date}</div>
-                <Button
-                    className={filter === 'all' ? 'active-filter' : ''}
-                    title={'all'} onClick={() => changeFilterHandler('all')}/>
-                <Button
-                    className={filter === 'active' ? 'active-filter' : ''}
-                    title={'active'} onClick={() => changeFilterHandler('active')}/>
-                <Button
-                    className={filter === 'completed' ? 'active-filter' : ''}
-                    title={'completed'} onClick={() => changeFilterHandler('completed')}/>
+                <Button size={'small'}
+                        variant={filter === 'all' ? 'outlined' : 'text'} color={'inherit'}
+                        onClick={() => changeFilterHandler('all')}>all</Button>
+                <Button size={'small'}
+                        variant={filter === 'active' ? 'outlined' : 'text'} color={'primary'}
+                        onClick={() => changeFilterHandler('active')}>active</Button>
+                <Button size={'small'}
+                        variant={filter === 'completed' ? 'outlined' : 'text'} color={'secondary'}
+                        onClick={() => changeFilterHandler('completed')}>completed</Button>
             </div>
         );
     }
