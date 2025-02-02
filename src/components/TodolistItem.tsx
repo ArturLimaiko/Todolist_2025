@@ -8,6 +8,8 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import Checkbox from '@mui/material/Checkbox';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem'
+import Box from '@mui/material/Box'
+import {containerSx, getListItemSx} from "../styles/TodolistItem.styles.ts.tsx";
 
 type Props = {
     todolist: Todolist
@@ -91,9 +93,12 @@ export const TodolistItem = (props: Props) => {
                             }
 
                             return (
-                                <ListItem key={task.id} className={task.isDone ? 'is-done' : ''}>
+                                <ListItem key={task.id}
+                                          sx={getListItemSx(task.isDone)}>
+                                    <div>
                                         <Checkbox size={'small'} checked={task.isDone} onChange={changeTaskStatusHandler}/>
-                                    <EditableSpan value={task.title} onChange={changeTaskTitleHandler}/>
+                                        <EditableSpan value={task.title} onChange={changeTaskTitleHandler}/>
+                                    </div>
                                     <IconButton onClick={deleteTaskHandler} aria-label="delete" size="small">
                                         <DeleteIcon fontSize="small"/>
                                     </IconButton>
@@ -102,15 +107,17 @@ export const TodolistItem = (props: Props) => {
                         })}
                     </List>)}
                 <div>{date}</div>
-                <Button size={'small'}
-                        variant={filter === 'all' ? 'outlined' : 'text'} color={'inherit'}
-                        onClick={() => changeFilterHandler('all')}>all</Button>
-                <Button size={'small'}
-                        variant={filter === 'active' ? 'outlined' : 'text'} color={'primary'}
-                        onClick={() => changeFilterHandler('active')}>active</Button>
-                <Button size={'small'}
-                        variant={filter === 'completed' ? 'outlined' : 'text'} color={'secondary'}
-                        onClick={() => changeFilterHandler('completed')}>completed</Button>
+                <Box sx={containerSx}>
+                    <Button size={'small'}
+                            variant={filter === 'all' ? 'outlined' : 'text'} color={'inherit'}
+                            onClick={() => changeFilterHandler('all')}>all</Button>
+                    <Button size={'small'}
+                            variant={filter === 'active' ? 'outlined' : 'text'} color={'primary'}
+                            onClick={() => changeFilterHandler('active')}>active</Button>
+                    <Button size={'small'}
+                            variant={filter === 'completed' ? 'outlined' : 'text'} color={'secondary'}
+                            onClick={() => changeFilterHandler('completed')}>completed</Button>
+                </Box>
             </div>
         );
     }

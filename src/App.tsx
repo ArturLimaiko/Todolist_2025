@@ -5,12 +5,13 @@ import {v1} from "uuid";
 import {CreateItemForm} from "./components/CreateItemForm.tsx";
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid2';
 import Paper from '@mui/material/Paper';
+import {containerSx} from "./styles/TodolistItem.styles.ts.tsx";
+import {NavButton} from "./styles/NavButton.ts";
 
 export type Task = { id: string, title: string, isDone: boolean }
 export type FilterValues = 'all' | 'active' | 'completed'
@@ -99,11 +100,15 @@ export const App = () => {
         <div className='app'>
             <AppBar sx={{mb: '30px'}} position="static">
                 <Toolbar>
-                    <Container maxWidth='lg'>
+                    <Container maxWidth='lg' sx={containerSx}>
                         <IconButton edge="start" size='small' aria-label='menu' color='inherit'>
                             <MenuIcon/>
                         </IconButton>
-                        <Button color="inherit">Login</Button>
+                        <div>
+                            <NavButton>Sign in</NavButton>
+                            <NavButton>Sign up</NavButton>
+                            <NavButton>Faq</NavButton>
+                        </div>
                     </Container>
                 </Toolbar>
             </AppBar>
@@ -125,7 +130,7 @@ export const App = () => {
                         }
                         return (
                             <Grid key={todolist.id}>
-                                <Paper sx={{p: '0 30px 30px 30px'}} >
+                                <Paper sx={{p: '0 30px 30px 30px'}}>
                                     <TodolistItem
                                         todolist={todolist}
                                         changeFilter={changeFilter}
