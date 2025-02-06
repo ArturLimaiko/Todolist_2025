@@ -24,12 +24,11 @@ export type TaskState = Record<string, Task[]>
 type ThemeMode = 'dark' | 'light'
 
 export const App = () => {
+    //локальное состояние с темой и изменение темы----------------------------------------------------------------------
     const [themeMode, setThemeMode] = useState<ThemeMode>('dark')
-
     const changeMode = () => {
         setThemeMode(themeMode == 'light' ? 'dark' : 'light')
     }
-
     const theme = createTheme({
         palette:{
             mode: themeMode,
@@ -42,12 +41,36 @@ export const App = () => {
     const todolistId1 = v1()
     const todolistId2 = v1()
 
+    //TODOLISTS---------------------------------------------------------------------------------------------------------
     //локальный стейт с тудулистами-----------------------------------------------------------------
     const [todolists, setTodolists] = useState<Todolist[]>([
         {id: todolistId1, title: 'Whats to learn', filter: 'all'},
         {id: todolistId2, title: 'Whats to buy', filter: 'all'},
     ])
 
+    //ф-ция создания тудулиста------------------------------------------------------------------
+    const createTodolist = (title: string) => {
+        const todolistId = v1()
+        const newTodolist: Todolist = {id: todolistId, title, filter: 'all'}
+        setTodolists([newTodolist, ...todolists])
+        setTasks({...tasks, [todolistId]: []})
+    }
+
+    //ф-ция удаления тудулиста--------------------------------------------------------------------
+    const deleteTodolist = (todolistId: string) => {
+        setTodolists(todolists.filter(t => t.id !== todolistId))
+        /** Удаляем таски нужного тудулиста из стейта тасок: */
+        delete tasks[todolistId]
+        /** Устанавливаем в state копию объекта что бы реакт обновил данные*/
+        setTasks({...tasks})
+    }
+
+    //ф-ция изменения названия тудулиста-----------------------------------------------------------
+    const changeTodolistTitle = (todolistId: string, title: string) => {
+        setTodolists(todolists.map(todolist => todolist.id === todolistId ? {...todolist, title} : todolist))
+    }
+
+    //TASKS-------------------------------------------------------------------------------------------------------------
     //локальный стейт с тасками---------------------------------------------------------------------
     const [tasks, setTasks] = useState<TaskState>({
         [todolistId1]: [
@@ -92,28 +115,6 @@ export const App = () => {
         })
     }
 
-
-    //ф-ция создания тудулиста------------------------------------------------------------------
-    const createTodolist = (title: string) => {
-        const todolistId = v1()
-        const newTodolist: Todolist = {id: todolistId, title, filter: 'all'}
-        setTodolists([newTodolist, ...todolists])
-        setTasks({...tasks, [todolistId]: []})
-    }
-
-    //ф-ция удаления тудулиста--------------------------------------------------------------------
-    const deleteTodolist = (todolistId: string) => {
-        setTodolists(todolists.filter(t => t.id !== todolistId))
-        /** Удаляем таски нужного тудулиста из стейта тасок: */
-        delete tasks[todolistId]
-        /** Устанавливаем в state копию объекта что бы реакт обновил данные*/
-        setTasks({...tasks})
-    }
-
-    //ф-ция изменения названия тудулиста-----------------------------------------------------------
-    const changeTodolistTitle = (todolistId: string, title: string) => {
-        setTodolists(todolists.map(todolist => todolist.id === todolistId ? {...todolist, title} : todolist))
-    }
 
     return (
         <div className='app'>
