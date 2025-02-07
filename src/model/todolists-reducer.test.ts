@@ -1,8 +1,9 @@
 import {v1} from 'uuid'
 import {expect, test} from 'vitest'
 import type {Todolist} from '../App'
-import {deleteTodolistAC, todolistsReducer} from './todolists-reducer'
+import {createTodolistAC, deleteTodolistAC, todolistsReducer} from './todolists-reducer'
 
+//тест удаления тудулиста
 test('correct todolist should be deleted', () => {
     const todolistId1 = v1()
     const todolistId2 = v1()
@@ -20,4 +21,21 @@ test('correct todolist should be deleted', () => {
     expect(endState.length).toBe(1)
     // удалится нужный тудулист, не любой
     expect(endState[0].id).toBe(todolistId2)
+})
+
+//тест добавления тудулиста
+test('correct todolist should be created', () => {
+    const todolistId1 = v1()
+    const todolistId2 = v1()
+
+    const startState: Todolist[] = [
+        {id: todolistId1, title: 'What to learn', filter: 'all'},
+        {id: todolistId2, title: 'What to buy', filter: 'all'},
+    ]
+
+    const title = 'New todolist'
+    const endState = todolistsReducer(startState, createTodolistAC(title))
+
+    expect(endState.length).toBe(3)
+    expect(endState[2].title).toBe(title)
 })
