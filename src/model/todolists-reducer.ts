@@ -53,6 +53,7 @@ export const todolistsReducer = (state: Todolist[] = initialState, action: Actio
             const filter = action.payload.filter
             return state.map(t => t.id === action.payload.id ? {...t, filter} : t)
         }
+        default :
+            return state
     }
 }
-
