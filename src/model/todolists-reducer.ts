@@ -1,16 +1,21 @@
 import {Todolist} from "../App.tsx";
 
-//начальное состояние
+//начальное состояние---------------------------------------------------------------------------------------
 let initialState: Todolist[] = []
 
+//типы экшонов----------------------------------------------------------------------------------------------
 export type DeleteTodolistAction = {
     type: 'delete_todolist'
     payload: { id: string }
 }
-
-//типизация общая инструкции
+//типизация общая-------------------------------------------------------------------------------------------
 type Actions = DeleteTodolistAction
 
+//action creator's------------------------------------------------------------------------------------------
+export const deleteTodolistAC = (id: string): DeleteTodolistAction => {
+    return {type: 'delete_todolist', payload: {id}} as const
+}
+//REDUCER------------------------------------------------------------------------
 export const todolistsReducer = (state: Todolist[] = initialState, action: Actions): Todolist[] => {
 
     switch (action.type) {
@@ -19,3 +24,4 @@ export const todolistsReducer = (state: Todolist[] = initialState, action: Actio
         }
     }
 }
+
