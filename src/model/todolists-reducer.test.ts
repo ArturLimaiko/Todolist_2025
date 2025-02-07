@@ -1,15 +1,26 @@
 import {v1} from 'uuid'
-import {expect, test} from 'vitest'
+import {beforeEach, expect, test} from 'vitest'
 import type {Todolist} from '../App'
-import {createTodolistAC, deleteTodolistAC, todolistsReducer} from './todolists-reducer'
+import {changeTodolistTitleAC, createTodolistAC, deleteTodolistAC, todolistsReducer} from './todolists-reducer'
 
-//тест удаления тудулиста
+let todolistId1 : string;
+let todolistId2 : string;
+let startState: Todolist[] = []
+
+beforeEach(() => {
+    todolistId1 = v1()
+    todolistId2 = v1()
+
+    startState = [
+        {id: todolistId1, title: 'What to learn', filter: 'all'},
+        {id: todolistId2, title: 'What to buy', filter: 'all'},
+    ]
+})
+
+//удаления тудулиста
 test('correct todolist should be deleted', () => {
-    const todolistId1 = v1()
-    const todolistId2 = v1()
-
     // 1. Стартовый state
-    const startState: Todolist[] = [
+    startState = [
         {id: todolistId1, title: 'What to learn', filter: 'all'},
         {id: todolistId2, title: 'What to buy', filter: 'all'},
     ]
@@ -23,12 +34,9 @@ test('correct todolist should be deleted', () => {
     expect(endState[0].id).toBe(todolistId2)
 })
 
-//тест добавления тудулиста
+//добавления тудулиста
 test('correct todolist should be created', () => {
-    const todolistId1 = v1()
-    const todolistId2 = v1()
-
-    const startState: Todolist[] = [
+    startState = [
         {id: todolistId1, title: 'What to learn', filter: 'all'},
         {id: todolistId2, title: 'What to buy', filter: 'all'},
     ]
@@ -38,4 +46,13 @@ test('correct todolist should be created', () => {
 
     expect(endState.length).toBe(3)
     expect(endState[2].title).toBe(title)
+})
+
+//изменение названия тудулиста
+test('correct todolist should change its title', () => {
+    const title = 'New title'
+    const endState = todolistsReducer(startState, changeTodolistTitleAC({id: todolistId2, title}))
+
+    expect(endState[0].title).toBe('What to learn')
+    expect(endState[1].title).toBe(title)
 })
