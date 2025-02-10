@@ -90,7 +90,7 @@ export const App = () => {
         setTasks({...tasks, [todolistId]: [newTask, ...tasks[todolistId]]})
     }
 
-    //ф-ция создания таски--------------------------------------------------------------------
+    //ф-ция изменения статуса таски--------------------------------------------------------------------
     const changeTaskStatus = (todolistId: string, taskId: string, isDone: boolean) => {
         setTasks({...tasks, [todolistId]: tasks[todolistId].map(task => task.id === taskId ? {...task, isDone} : task)})
     }
