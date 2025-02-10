@@ -2,6 +2,7 @@ import {FilterValues, Todolist} from "../App.tsx";
 import {v1} from "uuid";
 
 //начальное состояние---------------------------------------------------------------------------------------
+//по скольку может быть что ничего не придет , по этому нам надо передать хотя бы пустой массив
 let initialState: Todolist[] = []
 
 //возвращаемые типы экшонов----------------------------------------------------------------------------------------------
@@ -42,16 +43,17 @@ export const todolistsReducer = (state: Todolist[] = initialState, action: Actio
             return state.filter(todolist => todolist.id !== action.payload.id)
         }
         case 'create_todolist': {
-            const newTodolist: Todolist = {id: action.payload.id, title: action.payload.title, filter: 'all'}
+            const {id, title} = action.payload
+            const newTodolist: Todolist = {id, title, filter: 'all'}
             return [...state, newTodolist]
         }
         case 'change_todolist_title' : {
-            const title = action.payload.title
-            return state.map(t => t.id === action.payload.id ? {...t, title} : t)
+            const {title,id} = action.payload
+            return state.map(t => t.id === id ? {...t, title} : t)
         }
         case 'change_todolist_filter': {
-            const filter = action.payload.filter
-            return state.map(t => t.id === action.payload.id ? {...t, filter} : t)
+            const {filter,id} = action.payload
+            return state.map(t => t.id === id ? {...t, filter} : t)
         }
         default :
             return state

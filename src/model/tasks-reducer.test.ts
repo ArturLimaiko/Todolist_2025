@@ -31,7 +31,7 @@ test('array should be created for new todolist', () => {
     }
 
     expect(keys.length).toBe(3)
-    expect(endState[newKey]).toEqual([])
+    expect(endState[newKey]).toEqual([])//если же ключ нашли то создается пустой массив
 })
 
 //удаление тудулиста ---------------------------------------------------------------------------------------------------

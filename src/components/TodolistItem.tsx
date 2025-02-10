@@ -43,10 +43,6 @@ export const TodolistItem = (props: Props) => {
             createTask(id, title)
         }
 
-        // const createTodolistHandler = (id: string, title: string) => {
-        //     createTodolist(id, title)
-        // }
-
         //фильтрация тудулистов--------------------------------------------------------------------
         const changeFilterHandler = (filter: FilterValues) => {
             changeFilter(id, filter)
@@ -59,7 +55,7 @@ export const TodolistItem = (props: Props) => {
         const changeTodolistTitleHandler = (title: string) => {
             changeTodolistTitle(id, title)
         }
-    const safeTasks = tasks || []; // Если tasks undefined, используем пустой массив
+    // const safeTasks = tasks || []; // Если tasks undefined, используем пустой массив
         return (
             <div>
                 <div className="container">
@@ -74,7 +70,7 @@ export const TodolistItem = (props: Props) => {
                     <CreateItemForm createItem={createTaskHandler}/>
                 </div>
 
-                {safeTasks.length  === 0 ? (
+                {tasks.length  === 0 ? (
                         <p>Тасок нет</p>
                     )
                     : (<List>

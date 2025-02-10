@@ -37,7 +37,8 @@ export const tasksReducer = (state: TasksState = initialState, action: Actions):
 
     switch (action.type) {
         case 'create_todolist': {
-            return {...state, [action.payload.id]: []}
+            const {id} = action.payload
+            return {...state, [id]: []}
         }
         case 'delete_todolist': {
             const newState = {...state}//создаем копию стейта
@@ -45,19 +46,14 @@ export const tasksReducer = (state: TasksState = initialState, action: Actions):
             return newState // ретурним
         }
         case 'delete_task': {
+            const {todolistId, taskId} = action.payload
             return {
-                ...state, [action.payload.todolistId]: state[action.payload.todolistId]
-                    .filter(task => task.id !== action.payload.taskId)
+                ...state, [todolistId]: state[todolistId].filter(task => task.id !== taskId)
             }
         }
         case 'create_task': {
-            const {todolistId, title} = action.payload
-            if (!state[todolistId]) {
-                return state
-            }
-
+            const {title, todolistId} = action.payload
             const newTask: Task = {id: v1(), title, isDone: false}
-
             return {
                 ...state, [todolistId]: [newTask, ...state[todolistId]]
             }

@@ -21,7 +21,13 @@ import {
     deleteTodolistAC,
     todolistsReducer
 } from "./model/todolists-reducer.ts";
-import {createTaskAC, deleteTaskAC, tasksReducer} from "./model/tasks-reducer.tsx";
+import {
+    changeTaskStatusAC,
+    changeTaskTitleAC,
+    createTaskAC,
+    deleteTaskAC,
+    tasksReducer
+} from "./model/tasks-reducer.tsx";
 
 export type Task = { id: string, title: string, isDone: boolean }
 export type FilterValues = 'all' | 'active' | 'completed'
@@ -55,19 +61,20 @@ export const App = () => {
 
 
     //ф-ция создания тудулиста------------------------------------------------------------------
-    const createTodolist = (title: string,todolistId:string) => {
+    const createTodolist = (title: string) => {
         const action = createTodolistAC(title)
         dispatchToTodolists(action)
-        dispatchToTasks(createTaskAC({todolistId, title}))
+        dispatchToTasks(action)
     }
 
     //ф-ция удаления тудулиста--------------------------------------------------------------------
     const deleteTodolist = (todolistId: string) => {
-        dispatchToTodolists(deleteTodolistAC(todolistId))
+        const action = deleteTodolistAC(todolistId)
+        dispatchToTodolists(action)
         /** Удаляем таски нужного тудулиста из стейта тасок: */
         delete tasks[todolistId]
         /** Устанавливаем в state копию объекта что бы реакт обновил данные*/
-        setTasks({...tasks})
+        dispatchToTasks(action)
     }
 
     //ф-ция изменения названия тудулиста-----------------------------------------------------------
@@ -88,22 +95,17 @@ export const App = () => {
 
     //ф-ция создания таски--------------------------------------------------------------------
     const createTask = (todolistId: string, title: string) => {
-        // createTaskAC({todolistId, title})
         dispatchToTasks(createTaskAC({todolistId, title}))
     }
 
     //ф-ция изменения статуса таски--------------------------------------------------------------------
     const changeTaskStatus = (todolistId: string, taskId: string, isDone: boolean) => {
-        setTasks({...tasks, [todolistId]: tasks[todolistId].map(task => task.id === taskId ? {...task, isDone} : task)})
+        dispatchToTasks(changeTaskStatusAC({todolistId, taskId, isDone}))
     }
 
     //ф-ция изменения названия таски-----------------------------------------------------------
     const changeTaskTitle = (todolistId: string, taskId: string, title: string) => {
-        setTasks({
-            ...tasks, [todolistId]: tasks[todolistId].map(task => task.id === taskId
-                ? {...task, title}
-                : task)
-        })
+        dispatchToTasks(changeTaskTitleAC({todolistId, taskId, title}))
     }
 
     return (
@@ -133,7 +135,7 @@ export const App = () => {
                         {todolists.map(todolist => {
                             //фильтрация тасок---------------------------------------------------------------------
                             //для тудулиста берем первоначально все таски по айдишке
-                            const todolistTasks = tasks[todolist.id] || []
+                            const todolistTasks = tasks[todolist.id]
                             let filteredTasks = todolistTasks
                             if (todolist.filter === 'active') {
                                 filteredTasks = todolistTasks.filter(t => !t.isDone)
