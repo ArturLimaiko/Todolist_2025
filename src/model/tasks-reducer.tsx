@@ -8,12 +8,14 @@ let initialState: TasksState = {}
 //возвращаемые типы экшонов----------------------------------------------------------------------------------------------
 export type deleteTaskAction = ReturnType<typeof deleteTaskAC>
 export type createTaskAction = ReturnType<typeof createTaskAC>
+export type changeTaskStatusAction = ReturnType<typeof changeTaskStatusAC>
 //типизация общая-------------------------------------------------------------------------------------------
 type Actions =
     | CreateTodolistAction
     | DeleteTodolistAction
     | deleteTaskAction
     | createTaskAction
+    | changeTaskStatusAction
 //action creator's------------------------------------------------------------------------------------------
 export const deleteTaskAC = (payload: { todolistId: string, taskId: string }) => {
     return {type: 'delete_task', payload} as const
@@ -21,6 +23,10 @@ export const deleteTaskAC = (payload: { todolistId: string, taskId: string }) =>
 
 export const createTaskAC = (payload: { todolistId: string, title: string }) => {
     return {type: 'create_task', payload} as const
+}
+
+export const changeTaskStatusAC = (payload: { todolistId: string, taskId: string, isDone: boolean }) => {
+    return {type: 'change_task_status', payload} as const
 }
 
 //REDUCER------------------------------------------------------------------------
@@ -47,7 +53,15 @@ export const tasksReducer = (state: TasksState = initialState, action: Actions):
                 ...state, [action.payload.todolistId]: [newTask, ...state[action.payload.todolistId]]
             }
         }
-
+        case 'change_task_status': {
+            return {
+                ...state,
+                [action.payload.todolistId]: state[action.payload.todolistId].map(task => task.id === action.payload.taskId
+                    ? {...task, isDone: action.payload.isDone}
+                    : task
+                )
+            }
+        }
         default :
             return state
     }
