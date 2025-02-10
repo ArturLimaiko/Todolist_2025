@@ -3,7 +3,7 @@ import {CreateTodolistAction, DeleteTodolistAction} from "./todolists-reducer.ts
 import {v1} from "uuid";
 
 //начальное состояние---------------------------------------------------------------------------------------
-let initialState: TasksState = {}
+const initialState: TasksState = {}
 
 //возвращаемые типы экшонов----------------------------------------------------------------------------------------------
 export type deleteTaskAction = ReturnType<typeof deleteTaskAC>
@@ -12,11 +12,7 @@ export type changeTaskStatusAction = ReturnType<typeof changeTaskStatusAC>
 export type changeTaskTitleAction = ReturnType<typeof changeTaskTitleAC>
 
 //типизация общая-------------------------------------------------------------------------------------------
-type Actions =
-    | CreateTodolistAction
-    | DeleteTodolistAction
-    | deleteTaskAction
-    | createTaskAction
+type Actions = | CreateTodolistAction | DeleteTodolistAction | deleteTaskAction | createTaskAction
     | changeTaskStatusAction
     | changeTaskTitleAction
 
@@ -55,9 +51,15 @@ export const tasksReducer = (state: TasksState = initialState, action: Actions):
             }
         }
         case 'create_task': {
-            const newTask: Task = {id: v1(), title: action.payload.title, isDone: false}
+            const {todolistId, title} = action.payload
+            if (!state[todolistId]) {
+                return state
+            }
+
+            const newTask: Task = {id: v1(), title, isDone: false}
+
             return {
-                ...state, [action.payload.todolistId]: [newTask, ...state[action.payload.todolistId]]
+                ...state, [todolistId]: [newTask, ...state[todolistId]]
             }
         }
         case 'change_task_status': {
@@ -75,9 +77,9 @@ export const tasksReducer = (state: TasksState = initialState, action: Actions):
                 ...state,
                 [action.payload.todolistId]: state[action.payload.todolistId]
                     .map(task => task.id === action.payload.taskId
-                ? {...task, title}
-                    : task
-                )
+                        ? {...task, title}
+                        : task
+                    )
             }
         }
         default :

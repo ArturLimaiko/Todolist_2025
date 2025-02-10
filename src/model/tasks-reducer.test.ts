@@ -84,7 +84,7 @@ test('correct task should be created at correct array', () => {
 test('correct task should change its status', () => {
     const endState = tasksReducer(
         startState,
-        changeTaskStatusAC({ todolistId: 'todolistId2', taskId: '2', isDone: false })
+        changeTaskStatusAC({todolistId: 'todolistId2', taskId: '2', isDone: false})
     )
 
     expect(endState.todolistId2[2].isDone).toBe(false)
@@ -95,12 +95,10 @@ test('correct task should change its status', () => {
 test('correct task should change its title', () => {
     const endState = tasksReducer(
         startState,
-        changeTaskTitleAC({ todolistId: 'todolistId1', taskId: '1', title: 'TypeScript' })
+        changeTaskTitleAC({todolistId: 'todolistId1', taskId: '1', title: 'TypeScript'})
     )
 
     expect(endState.todolistId1[0].title).toBe('TypeScript')
     expect(endState.todolistId1[1].title).toBe('JS')
     expect(endState.todolistId1[2].title).toBe('React')
-    // expect(endState.todolistId1[2].title).toBe('JS')
-    // expect(endState.todolistId2[0].title).toBe('bread')
 })

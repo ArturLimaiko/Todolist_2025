@@ -59,7 +59,7 @@ export const TodolistItem = (props: Props) => {
         const changeTodolistTitleHandler = (title: string) => {
             changeTodolistTitle(id, title)
         }
-
+    const safeTasks = tasks || []; // Если tasks undefined, используем пустой массив
         return (
             <div>
                 <div className="container">
@@ -73,7 +73,8 @@ export const TodolistItem = (props: Props) => {
                 <div>
                     <CreateItemForm createItem={createTaskHandler}/>
                 </div>
-                {tasks.length === 0 ? (
+
+                {safeTasks.length  === 0 ? (
                         <p>Тасок нет</p>
                     )
                     : (<List>
