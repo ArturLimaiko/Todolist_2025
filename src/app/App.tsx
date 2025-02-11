@@ -21,8 +21,10 @@ import {
     deleteTodolistAC
 } from "../model/todolists-reducer.ts";
 import {changeTaskStatusAC, changeTaskTitleAC, createTaskAC, deleteTaskAC} from "../model/tasks-reducer.tsx";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {RootState} from "./store.ts";
+import {useAppDispatch} from "../common/hooks/useAppDispatch.ts";
+import {useAppSelector} from "../common/hooks/useAppSelector.ts";
 
 export type Task = { id: string, title: string, isDone: boolean }
 export type FilterValues = 'all' | 'active' | 'completed'
@@ -32,10 +34,10 @@ export type TasksState = Record<string, Task[]>
 type ThemeMode = 'dark' | 'light'
 
 export const App = () => {
-    const dispatch = useDispatch()//предоставляет компонентам dispatch для отправки action в Redux-хранилище.
+    const dispatch = useAppDispatch()//предоставляет компонентам dispatch для отправки action в Redux-хранилище.
 
-    const todolists = useSelector<RootState, Todolist[]>(state => state.todolists)
-    const tasks = useSelector<RootState, TasksState>(state => state.tasks)
+    const todolists = useAppSelector(state => state.todolists)
+    const tasks = useAppSelector(state => state.tasks)
 
     //локальное состояние с темой и изменение темы----------------------------------------------------------------------
     const [themeMode, setThemeMode] = useState<ThemeMode>('dark')
@@ -50,15 +52,6 @@ export const App = () => {
             }
         }
     });
-
-    // //TODOLISTS---------------------------------------------------------------------------------------------------------
-    // //локальный стейт с тудулистами-----------------------------------------------------------------
-    // const [todolists, dispatchToTodolists] = useReducer(todolistsReducer, [])
-    //
-    // //TASKS-------------------------------------------------------------------------------------------------------------
-    // //локальный стейт с тасками---------------------------------------------------------------------
-    // const [tasks, dispatchToTasks] = useReducer(tasksReducer, {})
-    //
 
     //ф-ция создания тудулиста------------------------------------------------------------------
     const createTodolist = (title: string) => {
