@@ -21,8 +21,6 @@ import {
     deleteTodolistAC
 } from "../model/todolists-reducer.ts";
 import {changeTaskStatusAC, changeTaskTitleAC, createTaskAC, deleteTaskAC} from "../model/tasks-reducer.tsx";
-import {useSelector} from "react-redux";
-import {RootState} from "./store.ts";
 import {useAppDispatch} from "../common/hooks/useAppDispatch.ts";
 import {useAppSelector} from "../common/hooks/useAppSelector.ts";
 
@@ -30,7 +28,6 @@ export type Task = { id: string, title: string, isDone: boolean }
 export type FilterValues = 'all' | 'active' | 'completed'
 export type Todolist = { id: string, title: string, filter: FilterValues }
 export type TasksState = Record<string, Task[]>
-// export type TaskState = { [key:string]: Task[] } //так попроще
 type ThemeMode = 'dark' | 'light'
 
 export const App = () => {
