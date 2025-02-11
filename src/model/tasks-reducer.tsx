@@ -1,4 +1,4 @@
-import {Task, TasksState} from "../App.tsx";
+import {Task, TasksState} from "../app/App.tsx";
 import {CreateTodolistAction, DeleteTodolistAction} from "./todolists-reducer.ts";
 import {v1} from "uuid";
 
@@ -20,11 +20,9 @@ type Actions = | CreateTodolistAction | DeleteTodolistAction | deleteTaskAction 
 export const deleteTaskAC = (payload: { todolistId: string, taskId: string }) => {
     return {type: 'delete_task', payload} as const
 }
-
 export const createTaskAC = (payload: { todolistId: string, title: string }) => {
     return {type: 'create_task', payload} as const
 }
-
 export const changeTaskStatusAC = (payload: { todolistId: string, taskId: string, isDone: boolean }) => {
     return {type: 'change_task_status', payload} as const
 }
@@ -34,7 +32,6 @@ export const changeTaskTitleAC = (payload: { todolistId: string, taskId: string,
 
 //REDUCER------------------------------------------------------------------------
 export const tasksReducer = (state: TasksState = initialState, action: Actions): TasksState => {
-
     switch (action.type) {
         case 'create_todolist': {
             const {id} = action.payload

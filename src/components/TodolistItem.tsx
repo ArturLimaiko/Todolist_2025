@@ -1,4 +1,4 @@
-import {FilterValues, Task, Todolist} from "../App.tsx";
+import {FilterValues, Task, Todolist} from "../app/App.tsx";
 import Button from '@mui/material/Button'
 import {ChangeEvent} from "react";
 import {CreateItemForm} from "./CreateItemForm.tsx";
