@@ -23,6 +23,8 @@ import {
 import {changeTaskStatusAC, changeTaskTitleAC, createTaskAC, deleteTaskAC} from "../model/tasks-reducer.tsx";
 import {useAppDispatch} from "../common/hooks/useAppDispatch.ts";
 import {useAppSelector} from "../common/hooks/useAppSelector.ts";
+import {selectTodolists} from "../model/todolists-selectors.ts";
+import {selectTasks} from "../model/tasks-selectors.ts";
 
 export type Task = { id: string, title: string, isDone: boolean }
 export type FilterValues = 'all' | 'active' | 'completed'
@@ -33,8 +35,8 @@ type ThemeMode = 'dark' | 'light'
 export const App = () => {
     const dispatch = useAppDispatch()//предоставляет компонентам dispatch для отправки action в Redux-хранилище.
 
-    const todolists = useAppSelector(state => state.todolists)
-    const tasks = useAppSelector(state => state.tasks)
+    const todolists = useAppSelector(selectTodolists)
+    const tasks = useAppSelector(selectTasks)
 
     //локальное состояние с темой и изменение темы----------------------------------------------------------------------
     const [themeMode, setThemeMode] = useState<ThemeMode>('dark')
